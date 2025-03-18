@@ -12,7 +12,7 @@ const useWebSocket = <TData extends Array<unknown> | Record<string, unknown>>(
 ) => {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [attempts, setAttempts] = useState(0);
-  const reconnectTimeout = useRef<number | null>(null);
+  const reconnectTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (!url) return;
@@ -23,7 +23,7 @@ const useWebSocket = <TData extends Array<unknown> | Record<string, unknown>>(
     setWs(socket);
 
     socket.onopen = () => {
-      console.log("WebSocket connected:", url);
+      console.debug("WebSocket connected:", url);
       setAttempts(0);
     };
 
@@ -42,7 +42,7 @@ const useWebSocket = <TData extends Array<unknown> | Record<string, unknown>>(
     };
 
     socket.onclose = (event) => {
-      console.log("WebSocket closed:", event.reason);
+      console.debug("WebSocket closed:", event.reason);
       if (attempts < WS_RETRY_ATTEMPTS) {
         // Calculate random exponential backoff delay
         const baseDelay = Math.min(
@@ -52,7 +52,7 @@ const useWebSocket = <TData extends Array<unknown> | Record<string, unknown>>(
         const jitter = Math.random() * baseDelay;
         const delay = baseDelay + jitter;
 
-        console.log(
+        console.debug(
           `Reconnecting attempt ${attempts + 1} in ${Math.round(delay)}ms...`,
         );
 
@@ -64,7 +64,7 @@ const useWebSocket = <TData extends Array<unknown> | Record<string, unknown>>(
     };
 
     return () => {
-      console.log("Cleaning up WebSocket:", url);
+      console.debug("Cleaning up WebSocket:", url);
       if (socket) {
         socket.onclose = null; // Prevent reconnect loop on manual close
         socket.close();
