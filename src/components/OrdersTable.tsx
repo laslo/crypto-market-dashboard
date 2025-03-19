@@ -28,12 +28,8 @@ const OrdersTable = ({
         <thead>
           <tr>
             <th></th>
-            <th className="text-left text-sm font-medium text-gray-500 py-2 px-4">
-              Price ({quoteCurrency})
-            </th>
-            <th className="text-left text-sm font-medium text-gray-500 py-2 px-4">
-              Amount ({baseCurrency})
-            </th>
+            <th className="text-left text-sm font-medium text-gray-500 py-2 px-4">Price ({quoteCurrency})</th>
+            <th className="text-left text-sm font-medium text-gray-500 py-2 px-4">Amount ({baseCurrency})</th>
           </tr>
         </thead>
         <tbody>
@@ -49,14 +45,8 @@ const OrdersTable = ({
                     width: `${volumePercentage}%`,
                   }}
                 ></td>
-                {/* Price */}
-                <td className={`${textColor} py-2 px-4 relative z-10`}>
-                  {order.price.toFixed(2)}
-                </td>
-                {/* Volume */}
-                <td className="text-gray-400 py-2 px-4 relative z-10">
-                  {order.volume.toFixed(4)}
-                </td>
+                <td className={`${textColor} py-2 px-4 relative z-10`}>{order.price.toFixed(2)}</td>
+                <td className="text-gray-400 py-2 px-4 relative z-10">{order.volume.toFixed(4)}</td>
               </tr>
             );
           })}

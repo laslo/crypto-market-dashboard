@@ -2,6 +2,7 @@
   "name": "binance-market-data",
   "version": "0.1.0",
   "private": true,
+  "description": "Dashboard displaying real-time cryptocurrency market data using the Binance API and WebSocket",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",

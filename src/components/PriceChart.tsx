@@ -1,15 +1,10 @@
 "use client";
 
-import {
-  CandlestickSeries,
-  createChart,
-  IChartApi,
-  ISeriesApi,
-  TimeChartOptions,
-} from "lightweight-charts";
+import { CandlestickSeries, createChart, IChartApi, ISeriesApi, TimeChartOptions } from "lightweight-charts";
 import { useEffect, useRef, useState } from "react";
 
 import fetchHistoricPriceData from "@/api/fetchHistoricPriceData";
+import { useToast } from "@/components/ToastProvider";
 import { IntervalType, PairType } from "@/constants";
 import useWebSocket from "@/hooks/useWebSocket";
 import mapHistoricPrice from "@/pipes/mapHistoricPrice";
@@ -28,6 +23,7 @@ const PriceChart = ({ pair, interval }: PriceChartProps) => {
   const chartRef = useRef<IChartApi | null>(null);
   const seriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
   const resizeObserver = useRef<ResizeObserver | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!pair || !chartContainerRef.current) return;
@@ -70,6 +66,12 @@ const PriceChart = ({ pair, interval }: PriceChartProps) => {
     `/${pair.replace("/", "").toLowerCase()}@kline_${interval}`,
     (data) => {
       seriesRef.current?.update(mapPriceMessage(data));
+    },
+    {
+      onOpen: () => toast("Connected to price live updates", "success"),
+      onClose: () => toast("Disconnected from price live updates", "error"),
+      onReconnect: () => toast("Reconnecting to price live updates..."),
+      onError: () => toast("Error connecting to price live updates", "error"),
     },
   );
 

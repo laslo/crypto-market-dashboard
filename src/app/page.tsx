@@ -16,10 +16,7 @@ export default function Home() {
       <header className="flex flex-col md:flex-row md:items-center md:gap-4">
         <h1 className="text-2xl font-bold">Market Data | {pair}</h1>
         <div className="flex flex-1 justify-between md:justify-start md:mt-2 md:space-x-4">
-          <SelectBox
-            options={pairsList.map((pair) => ({ label: pair, value: pair }))}
-            onChange={setPair}
-          />
+          <SelectBox options={pairsList.map((pair) => ({ label: pair, value: pair }))} onChange={setPair} />
           <SelectBox
             options={intervalsList.map((pair) => ({
               label: pair,

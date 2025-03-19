@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import fetchDepthData from "@/api/fetchDepthData";
 import OrdersTable from "@/components/OrdersTable";
+import { useToast } from "@/components/ToastProvider";
 import { DEFAULT_DEPTH } from "@/constants";
 import useWebSocket from "@/hooks/useWebSocket";
 import mapDepthOrder from "@/pipes/mapDepthOrder";
@@ -13,6 +14,7 @@ const OrderBook = ({ pair }: { pair: string }) => {
   const [bids, setBids] = useState<OrderType[] | null>([]);
   const [asks, setAsks] = useState<OrderType[] | null>([]);
   const [baseCurrency, quoteCurrency] = pair.split("/");
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!pair) return;
@@ -30,13 +32,16 @@ const OrderBook = ({ pair }: { pair: string }) => {
       setBids(data.bids.map(mapDepthOrder));
       setAsks(data.asks.map(mapDepthOrder));
     },
+    {
+      onOpen: () => toast("Connected to order book live updates", "success"),
+      onClose: () => toast("Disconnected from order book live updates", "error"),
+      onReconnect: () => toast("Reconnecting to order book live updates..."),
+      onError: () => toast("Error connecting to order book live updates", "error"),
+    },
   );
 
   return (
-    <div
-      className="flex flex-col gap-4
-                    grid grid-cols-2"
-    >
+    <div className="gap-4 grid grid-cols-2">
       <section
         className="min-w-2xs border-gray-300 p-4
                   col-span-2

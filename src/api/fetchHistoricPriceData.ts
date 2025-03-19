@@ -1,8 +1,4 @@
-import {
-  HISTORIC_PRICE_DATA_LENGTH,
-  IntervalType,
-  PairType,
-} from "@/constants";
+import { HISTORIC_PRICE_DATA_LENGTH, IntervalType, PairType } from "@/constants";
 import { RawHistoricPrice } from "@/types";
 
 const fetchHistoricPriceData = async (
@@ -15,9 +11,7 @@ const fetchHistoricPriceData = async (
     interval,
     limit,
   });
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BINANCE_API}/klines?${params.toString()}`,
-  );
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BINANCE_API}/klines?${params.toString()}`);
   return await response.json();
 };
 
